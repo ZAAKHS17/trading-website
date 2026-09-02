@@ -1,0 +1,181 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TradeDirection {
+  LONG
+  SHORT
+}
+
+enum TradeResult {
+  WIN
+  LOSS
+  BREAK_EVEN
+}
+
+enum TradingSession {
+  ASIA
+  LONDON
+  NEW_YORK
+  PRE_MARKET
+  POST_MARKET
+  OTHER
+}
+
+enum AssetType {
+  STOCK
+  FOREX
+  CRYPTO
+  FUTURES
+  OPTION
+  ETF
+  OTHER
+}
+
+enum AccountType {
+  CASH
+  MARGIN
+  PROPFIRM
+  OTHER
+}
+
+model User {
+  id             String           @id @default(uuid())
+  name           String?
+  email          String           @unique
+  password       String
+  image          String?
+  timezone       String?
+  currency       String?
+  defaultRisk    Float?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  tradingAccounts TradingAccount[]
+  trades          Trade[]
+  strategies      Strategy[]
+  tags            Tag[]
+  dailyJournals   DailyJournal[]
+}
+
+model TradingAccount {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  name           String
+  broker         String?
+  propFirm       String?
+  startingBalance Float
+  currentBalance  Float
+  accountSize    Int?
+  accountType    AccountType
+  currency       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  trades Trade[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model Strategy {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  trades Trade[]
+
+  @@index([userId])
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tradeTags TradeTag[]
+
+  @@index([userId])
+}
+
+model Trade {
+  id               String         @id @default(uuid())
+  userId           String
+  user             User           @relation(fields: [userId], references: [id])
+  tradingAccountId String
+  tradingAccount   TradingAccount @relation(fields: [tradingAccountId], references: [id])
+  strategyId       String?
+  strategy         Strategy?      @relation(fields: [strategyId], references: [id])
+  date             DateTime
+  time             String?
+  symbol           String
+  assetType        AssetType
+  direction        TradeDirection
+  entryPrice       Float
+  stopLoss         Float?
+  takeProfit       Float?
+  exitPrice        Float?
+  positionSize     Float?
+  riskAmount       Float?
+  profitLoss       Float?
+  fees             Float?
+  riskReward       Float?
+  session          TradingSession
+  result           TradeResult
+  notes            String?
+  mistakes         String?
+  lessons          String?
+  emotionBefore    String?
+  emotionAfter     String?
+  confidenceLevel  Int?
+  screenshotUrl    String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  tradeTags TradeTag[]
+
+  @@index([userId])
+  @@index([tradingAccountId])
+  @@index([strategyId])
+}
+
+model TradeTag {
+  tradeId String
+  tagId   String
+
+  trade Trade @relation(fields: [tradeId], references: [id])
+  tag   Tag   @relation(fields: [tagId], references: [id])
+
+  @@id([tradeId, tagId])
+  @@index([tagId])
+}
+
+model DailyJournal {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  date           DateTime
+  notes          String?
+  mistakes       String?
+  lessons        String?
+  disciplineScore Int?
+  emotion        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@index([date])
+}
