@@ -1,12 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Welcome</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trading Website</title>
+  <style>
+    :root{
+      --bg:#0b0f14; /* outer background */
+      --card:#0f1720; /* card bg */
+      --muted:#9aa6b2;
+      --accent:#2bd4a4;
+      --glass: rgba(255,255,255,0.03);
+      --shadow: 0 6px 18px rgba(2,6,23,0.6);
+      --radius:12px;
+      --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#05111a 0%, var(--bg) 60%);
+      color:#e6eef3;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+    }
+    .container{max-width:var(--maxw);margin:0 auto;padding:48px 20px}
+
+    /* Header / Hero */
+    .hero{
+      display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding:56px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:var(--shadow);
+      backdrop-filter: blur(6px);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .hero-inner{display:flex;flex-direction:column;gap:18px;max-width:760px}
+    h1{font-size: clamp(28px, 4vw, 46px);margin:0 0 6px 0;letter-spacing:-0.5px}
+    p.lead{color:var(--muted);margin:0;font-size:16px}
+    .hero-cta{display:flex;gap:12px;align-items:center;margin-top:8px}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#1ecfa0);color:#04221a;font-weight:600;border:none;text-decoration:none;box-shadow:0 6px 20px rgba(43,212,164,0.12);cursor:pointer;font-size:15px
+    }
+    .btn.secondary{background:transparent;color:var(--accent);border:1px solid rgba(255,255,255,0.04);padding:10px 14px}
+    .kpis{display:flex;gap:18px;margin-top:8px;color:var(--muted);font-size:13px}
+
+    /* Cards */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+    .card{
+      background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform .22s ease, box-shadow .22s ease;display:flex;gap:14px;align-items:flex-start
+    }
+    .card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(2,6,23,0.6)}
+    .icon{width:52px;height:52px;flex:0 0 52px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:grid;place-items:center}
+    .card h3{margin:0;font-size:18px}
+    .card p{margin:6px 0 0 0;color:var(--muted);font-size:14px}
+
+    /* Footer */
+    footer{margin-top:36px;padding:22px 0;color:var(--muted);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+    footer .links{display:flex;gap:12px}
+    a.link{color:var(--muted);text-decoration:none;font-size:14px}
+    a.link:hover{color:#fff}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .container{padding:28px 16px}
+      .hero{padding:28px}
+      .kpis{flex-direction:column}
+      .cards{grid-template-columns:1fr}
+      footer{flex-direction:column;align-items:flex-start;gap:8px}
+    }
+
+    /* small accent chart in hero */
+    .mini-chart{width:220px;height:64px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center}
+    .muted-sm{color:var(--muted);font-size:13px}
+  </style>
 </head>
 <body>
-  <h1>Welcome</h1>
-  <p>This repository now has an index.html file created by the coding agent.</p>
+  <div class="container">
+    <header class="hero" role="banner">
+      <div class="hero-inner">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#1b3340,#0f2330);display:grid;place-items:center;font-weight:700;color:var(--accent)">TW</div>
+          <div>
+            <div style="color:var(--muted);font-size:13px">Welcome to</div>
+            <h1>Trading Website</h1>
+          </div>
+        </div>
+
+        <p class="lead">Navigate markets with confidence — real-time data, powerful charts, and secure trades in one place.</p>
+
+        <div class="hero-cta">
+          <a class="btn" href="#get-started">Get Started</a>
+          <a class="btn secondary" href="#features">Explore Features</a>
+        </div>
+
+        <div class="kpis">
+          <div class="muted-sm">Live prices · Low latency · 24/7 support</div>
+        </div>
+      </div>
+
+      <aside style="margin-left:auto;display:flex;flex-direction:column;gap:12px;align-items:flex-end">
+        <div class="mini-chart" aria-hidden="true">
+          <!-- simple inline sparkline SVG -->
+          <svg width="200" height="48" viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 40 L24 32 L48 26 L72 18 L96 22 L120 14 L144 20 L168 8 L198 12" stroke="#2bd4a4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.95" />
+          </svg>
+        </div>
+        <div class="muted-sm">Market snapshot • Updated live</div>
+      </aside>
+    </header>
+
+    <main id="get-started">
+      <section style="margin-top:28px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <h2 id="features" style="margin:0">Powerful features</h2>
+          <div class="muted-sm">Tools built for active traders and institutions</div>
+        </div>
+
+        <div class="cards" style="margin-top:18px">
+          <!-- Card 1: Live Prices -->
+          <article class="card">
+            <div class="icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="6" width="20" height="12" rx="2" stroke="#aeead3" stroke-width="1.6" fill="none" />
+                <path d="M4 12h4l3-4 5 8 3-6" stroke="#2bd4a4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg>
+            </div>
+            <div>
+              <h3>Live Prices</h3>
+              <p>Stream real-time market prices with ultra-low latency and customizable watchlists.</p>
+            </div>
+          </article>
+
+          <!-- Card 2: Advanced Charts -->
+          <article class="card">
+            <div class="icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 18h3V9H3v9zM10 18h3V5h-3v13zM17 18h3v-6h-3v6z" fill="#aeead3" />
+              </svg>
+            </div>
+            <div>
+              <h3>Advanced Charts</h3>
+              <p>Interactive, multi-timeframe charts with drawing tools, indicators, and export options.</p>
+            </div>
+          </article>
+
+          <!-- Card 3: Secure Trading -->
+          <article class="card">
+            <div class="icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2l6 4v4c0 5-4 9-6 10-2-1-6-5-6-10V6l6-4z" stroke="#aeead3" stroke-width="1.4" fill="none" />
+                <circle cx="12" cy="12" r="2" fill="#2bd4a4" />
+              </svg>
+            </div>
+            <div>
+              <h3>Secure Trading</h3>
+              <p>Bank-grade encryption, two-factor authentication, and segregated funds for peace of mind.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© "Trading Website" • <span style="color:var(--muted)">2026</span></div>
+      <div class="links">
+        <a class="link" href="#">Terms</a>
+        <a class="link" href="#">Privacy</a>
+        <a class="link" href="#">Contact</a>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
