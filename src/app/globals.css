@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Basic light/dark palette tweaks */
+:root {
+  --bg: 255 255 255;
+  --muted: 100 116 139;
+}
+
+html, body {
+  background-color: rgb(var(--bg) / 1);
+}
+
+.dark {
+  --bg: 15 23 42;
+  --muted: 148 163 184;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  @apply bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded p-4;
+}
